@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 50,
-  "iteration": 1612797983782,
+  "iteration": 1612804834705,
   "links": [],
   "panels": [
     {
@@ -27,20 +27,6 @@
         "w": 24,
         "x": 0,
         "y": 0
-      },
-      "id": 14,
-      "panels": [],
-      "title": "Row title",
-      "type": "row"
-    },
-    {
-      "collapsed": false,
-      "datasource": null,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 1
       },
       "id": 2,
       "panels": [],
@@ -90,7 +76,7 @@
         "h": 5,
         "w": 5,
         "x": 0,
-        "y": 2
+        "y": 1
       },
       "id": 4,
       "options": {
@@ -165,7 +151,7 @@
         "h": 5,
         "w": 5,
         "x": 5,
-        "y": 2
+        "y": 1
       },
       "id": 11,
       "options": {
@@ -239,7 +225,7 @@
         "h": 5,
         "w": 4,
         "x": 10,
-        "y": 2
+        "y": 1
       },
       "id": 8,
       "options": {
@@ -258,7 +244,7 @@
         {
           "expr": "sum(node_memory_MemTotal_bytes{instance=~\"$node:9100\"} - node_memory_MemFree_bytes{instance=~\"$node:9100\"} - node_memory_Buffers_bytes{instance=~\"$node:9100\"} - node_memory_Cached_bytes{instance=~\"$node:9100\"}) / sum(kube_node_status_allocatable_memory_bytes{node=~\"$node\"}) * 100",
           "hide": false,
-          "instant": false,
+          "instant": true,
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -313,7 +299,7 @@
         "h": 5,
         "w": 5,
         "x": 14,
-        "y": 2
+        "y": 1
       },
       "id": 12,
       "options": {
@@ -386,7 +372,7 @@
         "h": 5,
         "w": 5,
         "x": 19,
-        "y": 2
+        "y": 1
       },
       "id": 6,
       "options": {
@@ -434,7 +420,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 7
+        "y": 6
       },
       "hiddenSeries": false,
       "id": 16,
@@ -483,9 +469,9 @@
           "refId": "C"
         },
         {
-          "expr": "sum(rate(container_cpu_usage_seconds_total{instance=~'$node|$nodeHost.*', id='/'}[2m])) by (instance)",
+          "expr": "sum(rate(container_cpu_usage_seconds_total{instance=~'$node', id='/'}[2m])) by (instance)",
           "interval": "",
-          "legendFormat": "Used",
+          "legendFormat": "Used-{{instance}}",
           "refId": "D"
         }
       ],
@@ -549,7 +535,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 7
+        "y": 6
       },
       "hiddenSeries": false,
       "id": 18,
@@ -624,7 +610,7 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "format": "bytes",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -637,11 +623,11 @@
           "logBase": 1,
           "max": null,
           "min": null,
-          "show": true
+          "show": false
         }
       ],
       "yaxis": {
-        "align": false,
+        "align": true,
         "alignLevel": null
       }
     }
@@ -701,7 +687,7 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -727,12 +713,12 @@
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "K8s Node Stats",
   "uid": "hTuC_WEGk",
-  "version": 5
+  "version": 11
 }
