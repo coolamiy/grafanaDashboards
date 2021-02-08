@@ -1,0 +1,960 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "pods dashboard",
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 48,
+  "iteration": 1612805182128,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 4,
+      "panels": [],
+      "title": "CPU and Memory ",
+      "type": "row"
+    },
+    {
+      "datasource": "kubernetes-prod",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "decimals": 3,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 90000
+              },
+              {
+                "color": "red",
+                "value": 100000
+              }
+            ]
+          },
+          "unit": "decmbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 10,
+        "x": 0,
+        "y": 1
+      },
+      "id": 8,
+      "options": {
+        "displayMode": "gradient",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true
+      },
+      "pluginVersion": "7.2.0",
+      "targets": [
+        {
+          "expr": "sum by(namespace) (container_memory_usage_bytes{namespace=\"$namespace\",container!=\"pod\",image!=\"\"})/1048576",
+          "interval": "",
+          "legendFormat": "{{namespace}}",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Namespace Memory Usage : $namespace",
+      "type": "bargauge"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "description": "This graph attempts to show you CPU use of your application vs its requests",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 0,
+      "fillGradient": 2,
+      "gridPos": {
+        "h": 8,
+        "w": 14,
+        "x": 10,
+        "y": 1
+      },
+      "hiddenSeries": false,
+      "id": 2,
+      "legend": {
+        "alignAsTable": false,
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.2.0",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": true,
+      "targets": [
+        {
+          "expr": "sum (rate (container_cpu_usage_seconds_total{namespace=~\"$namespace\", pod_name=\"$pod\", container_name!=\"POD\"}[1m])) by (container_name)",
+          "interval": "",
+          "legendFormat": "{{ container_name }}",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(container_spec_cpu_shares{namespace=~\"$namespace\", pod_name=\"$pod\", container_name!=\"POD\"}) by (container_name) / 1000",
+          "interval": "",
+          "legendFormat": "{{ container_name }} (requested)",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "CPU Core Usage vs Requested : $pod",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "decimals": 3,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 800
+              },
+              {
+                "color": "red",
+                "value": 1000
+              }
+            ]
+          },
+          "unit": "decmbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 10,
+        "x": 0,
+        "y": 3
+      },
+      "id": 10,
+      "options": {
+        "displayMode": "gradient",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true
+      },
+      "pluginVersion": "7.2.0",
+      "targets": [
+        {
+          "expr": "sum by (container)(container_memory_working_set_bytes{namespace=\"$namespace\",pod=\"$pod\",container!=\"POD\",image!=\"\"})/1048576",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "{{container}}",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Container Memory Stats",
+      "type": "bargauge"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 4
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 10,
+        "x": 0,
+        "y": 6
+      },
+      "id": 12,
+      "options": {
+        "displayMode": "lcd",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true
+      },
+      "pluginVersion": "7.2.0",
+      "targets": [
+        {
+          "expr": "(rate (container_cpu_usage_seconds_total{namespace=~\"$namespace\",pod=\"$pod\",container!=\"POD\",container!=\"\"}[1m])) ",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "{{container}}",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "CPU",
+      "type": "bargauge"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "description": "This graph attempts to show you RAM use of your application vs its requests",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 0,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 9
+      },
+      "hiddenSeries": false,
+      "id": 6,
+      "legend": {
+        "alignAsTable": false,
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.2.0",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum (avg_over_time (container_memory_working_set_bytes{namespace=\"$namespace\", pod_name=\"$pod\", container_name!=\"POD\"}[1m])) by (container_name)",
+          "interval": "",
+          "legendFormat": "{{ container_name }}",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(container_spec_memory_limit_bytes{namespace=~\"$namespace\", pod_name=\"$pod\", container_name!=\"POD\"}) by (container_name)",
+          "interval": "",
+          "legendFormat": "{{ container_name }} (requested)",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "RAM Usage vs Requested : $pod",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    }
+  ],
+  "refresh": "10s",
+  "schemaVersion": 26,
+  "style": "dark",
+  "tags": [
+    "kubernetes, pods"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "jenkins-prod",
+          "value": "jenkins-prod"
+        },
+        "datasource": "kubernetes-prod",
+        "definition": "query_result(sum(container_memory_working_set_bytes{namespace!=\"\"}) by (namespace))",
+        "hide": 0,
+        "includeAll": false,
+        "label": "NAMESPACE",
+        "multi": false,
+        "name": "namespace",
+        "options": [],
+        "query": "query_result(sum(container_memory_working_set_bytes{namespace!=\"\"}) by (namespace))",
+        "refresh": 1,
+        "regex": "/namespace=\\\"(.*?)(\\\")/",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "xct-14-0-032-ci-was900-sa-jdk8-oracle19-bt-servi-53-xfq8m-s601n",
+          "value": "xct-14-0-032-ci-was900-sa-jdk8-oracle19-bt-servi-53-xfq8m-s601n"
+        },
+        "datasource": "kubernetes-prod",
+        "definition": "query_result(sum(container_memory_working_set_bytes{namespace=\"$namespace\"}) by (pod_name))",
+        "hide": 0,
+        "includeAll": false,
+        "label": "POD",
+        "multi": false,
+        "name": "pod",
+        "options": [
+          {
+            "selected": true,
+            "text": "sctinst-2-6-032-ci-dev-emb-oracle122-163-54gbw-lwtv5",
+            "value": "sctinst-2-6-032-ci-dev-emb-oracle122-163-54gbw-lwtv5"
+          },
+          {
+            "selected": false,
+            "text": "na-core-feature-6-0-na-1661-generic-scheduler-bui-4-2png9-x58z6",
+            "value": "na-core-feature-6-0-na-1661-generic-scheduler-bui-4-2png9-x58z6"
+          },
+          {
+            "selected": false,
+            "text": "arbips-1-0-032-ci-longrunningtests-was900-oracl-250-dsbmr-0v3tf",
+            "value": "arbips-1-0-032-ci-longrunningtests-was900-oracl-250-dsbmr-0v3tf"
+          },
+          {
+            "selected": false,
+            "text": "xct-14-1-businessevents-11-qa-was900-sa-jdk8-orac-8-6p2cl-90ssr",
+            "value": "xct-14-1-businessevents-11-qa-was900-sa-jdk8-orac-8-6p2cl-90ssr"
+          },
+          {
+            "selected": false,
+            "text": "xct-14-2-032-ci-was900-sa-jdk8-oracle19-bt-bva-96-m0zpr-t3h77",
+            "value": "xct-14-2-032-ci-was900-sa-jdk8-oracle19-bt-bva-96-m0zpr-t3h77"
+          },
+          {
+            "selected": false,
+            "text": "mandiritt-1-4-032-ci-was900-jdk8-oracle19-bt-50-276vz-7g7rw",
+            "value": "mandiritt-1-4-032-ci-was900-jdk8-oracle19-bt-50-276vz-7g7rw"
+          },
+          {
+            "selected": false,
+            "text": "generic-small-nvrgr",
+            "value": "generic-small-nvrgr"
+          },
+          {
+            "selected": false,
+            "text": "fmacwires-2-0-032-ci-jboss71-mq9-oracle122-bt-ni-59-5cv95-f48ql",
+            "value": "fmacwires-2-0-032-ci-jboss71-mq9-oracle122-bt-ni-59-5cv95-f48ql"
+          },
+          {
+            "selected": false,
+            "text": "na-pom-rbs-feature-2-3-rbspom-550-veracode-bui-2023-8zp4k-5g92w",
+            "value": "na-pom-rbs-feature-2-3-rbspom-550-veracode-bui-2023-8zp4k-5g92w"
+          },
+          {
+            "selected": false,
+            "text": "arbips-1-0-02-publish-2437-6b187-l00h8",
+            "value": "arbips-1-0-02-publish-2437-6b187-l00h8"
+          },
+          {
+            "selected": false,
+            "text": "sctinst-2-6-032-ci-urgent-was900-cl-jdk8-oracle-164-lhh09-qwxl9",
+            "value": "sctinst-2-6-032-ci-urgent-was900-cl-jdk8-oracle-164-lhh09-qwxl9"
+          },
+          {
+            "selected": false,
+            "text": "mhbk-8-0-032-ci-tfk-qa-bt-sepa-274-stcc6-w532z",
+            "value": "mhbk-8-0-032-ci-tfk-qa-bt-sepa-274-stcc6-w532z"
+          },
+          {
+            "selected": false,
+            "text": "na-som-1-0-build-8-vfj3c-cm4td",
+            "value": "na-som-1-0-build-8-vfj3c-cm4td"
+          },
+          {
+            "selected": false,
+            "text": "arbips-1-0-032-ci-bt-was900-oracle19-mq90-1379-x6s5b-dlh0s",
+            "value": "arbips-1-0-032-ci-bt-was900-oracle19-mq90-1379-x6s5b-dlh0s"
+          },
+          {
+            "selected": false,
+            "text": "ecxct-1-0-032-ci-dev-was90-mq90-728-9mhrj-6rz5f",
+            "value": "ecxct-1-0-032-ci-dev-was90-mq90-728-9mhrj-6rz5f"
+          },
+          {
+            "selected": false,
+            "text": "ecxct-1-0-032-ci-ooc-oracle19-728-v9p0s-9qzrq",
+            "value": "ecxct-1-0-032-ci-ooc-oracle19-728-v9p0s-9qzrq"
+          },
+          {
+            "selected": false,
+            "text": "amexach-1-0-032-ci-was900-jdk8-oracle121-bt-nig-443-gj5cx-20t63",
+            "value": "amexach-1-0-032-ci-was900-jdk8-oracle121-bt-nig-443-gj5cx-20t63"
+          },
+          {
+            "selected": false,
+            "text": "sctinst-2-6-032-ci-urgent-ol20-oracle19-mq90-bt-51-n96dw-n4mwd",
+            "value": "sctinst-2-6-032-ci-urgent-ol20-oracle19-mq90-bt-51-n96dw-n4mwd"
+          },
+          {
+            "selected": false,
+            "text": "mhbk-8-0-032-ci-sepast-404-st4j7-kwgs9",
+            "value": "mhbk-8-0-032-ci-sepast-404-st4j7-kwgs9"
+          },
+          {
+            "selected": false,
+            "text": "mhbk-8-0-032-ci-sepa-sdd-dev-405-g1lvx-vj1lg",
+            "value": "mhbk-8-0-032-ci-sepa-sdd-dev-405-g1lvx-vj1lg"
+          },
+          {
+            "selected": false,
+            "text": "arbips-1-0-11-qa-bt-was900-oracle19-mq90-1249-977th-nqvw5",
+            "value": "arbips-1-0-11-qa-bt-was900-oracle19-mq90-1249-977th-nqvw5"
+          },
+          {
+            "selected": false,
+            "text": "xct-14-2-032-ci-embrest-oracle19-96-wt4hm-509wc",
+            "value": "xct-14-2-032-ci-embrest-oracle19-96-wt4hm-509wc"
+          },
+          {
+            "selected": false,
+            "text": "arbips-1-0-11-qa-cbis-was900-oracle19-mq90-489-6m4vh-856sh",
+            "value": "arbips-1-0-11-qa-cbis-was900-oracle19-mq90-489-6m4vh-856sh"
+          },
+          {
+            "selected": false,
+            "text": "na-pom-payment-ui-rbs-feature-2-3-rbspom-550-v-2034-7zbc1-wvxk3",
+            "value": "na-pom-payment-ui-rbs-feature-2-3-rbspom-550-v-2034-7zbc1-wvxk3"
+          },
+          {
+            "selected": false,
+            "text": "xct-14-2-032-ci-wls122-cl-jdk8-oracle19-bt-ova1--28-7jkn0-vmv2q",
+            "value": "xct-14-2-032-ci-wls122-cl-jdk8-oracle19-bt-ova1--28-7jkn0-vmv2q"
+          },
+          {
+            "selected": false,
+            "text": "docker-large-27tcl",
+            "value": "docker-large-27tcl"
+          },
+          {
+            "selected": false,
+            "text": "rbscbis-1-2-02-publish-197-b8c6s-2kcfs",
+            "value": "rbscbis-1-2-02-publish-197-b8c6s-2kcfs"
+          },
+          {
+            "selected": false,
+            "text": "na-pom-amex-1-1-build-11-qgdg4-2sk1j",
+            "value": "na-pom-amex-1-1-build-11-qgdg4-2sk1j"
+          },
+          {
+            "selected": false,
+            "text": "xct-14-2-032-ci-ooc-oracle19-83-fwvjt-mwgd2",
+            "value": "xct-14-2-032-ci-ooc-oracle19-83-fwvjt-mwgd2"
+          },
+          {
+            "selected": false,
+            "text": "arbips-1-0-032-ci-longrunningtests-was900-oracl-251-lcpx4-bc6lw",
+            "value": "arbips-1-0-032-ci-longrunningtests-was900-oracl-251-lcpx4-bc6lw"
+          },
+          {
+            "selected": false,
+            "text": "xct-14-2-032-ci-was900-sa-jdk8-oracle19-bt-mapva-28-qqwxm-59scx",
+            "value": "xct-14-2-032-ci-was900-sa-jdk8-oracle19-bt-mapva-28-qqwxm-59scx"
+          },
+          {
+            "selected": false,
+            "text": "amexach-1-0-032-ci-was900-jdk8-oracle121-bt-mig-3-nxj98-ktjmr",
+            "value": "amexach-1-0-032-ci-was900-jdk8-oracle121-bt-mig-3-nxj98-ktjmr"
+          },
+          {
+            "selected": false,
+            "text": "xct-14-2-032-ci-jboss73-oracle19-mq91-bt-scenari-28-g1z4w-g3jr7",
+            "value": "xct-14-2-032-ci-jboss73-oracle19-mq91-bt-scenari-28-g1z4w-g3jr7"
+          },
+          {
+            "selected": false,
+            "text": "mhbk-8-0-032-ci-tfk-qa-bt-internal-245-fln87-jg0g6",
+            "value": "mhbk-8-0-032-ci-tfk-qa-bt-internal-245-fln87-jg0g6"
+          },
+          {
+            "selected": false,
+            "text": "xct-14-2-032-ci-was900-sa-jdk8-oracle19-bt-mappi-96-cmr2n-9kk0p",
+            "value": "xct-14-2-032-ci-was900-sa-jdk8-oracle19-bt-mappi-96-cmr2n-9kk0p"
+          },
+          {
+            "selected": false,
+            "text": "sctinst-2-6-032-ci-dev-ooc-oracle19-163-wmnzb-j7p46",
+            "value": "sctinst-2-6-032-ci-dev-ooc-oracle19-163-wmnzb-j7p46"
+          },
+          {
+            "selected": false,
+            "text": "sctinst-2-6-032-ci-dev-emb-oracle19-163-p8gn8-k6n7q",
+            "value": "sctinst-2-6-032-ci-dev-emb-oracle19-163-p8gn8-k6n7q"
+          },
+          {
+            "selected": false,
+            "text": "xct-14-2-032-ci-wls122-cl-jdk8-oracle19-bt-servi-28-wnt2f-8w4zl",
+            "value": "xct-14-2-032-ci-wls122-cl-jdk8-oracle19-bt-servi-28-wnt2f-8w4zl"
+          },
+          {
+            "selected": false,
+            "text": "arbips-1-0-032-ci-gw-btgateway-was900-mq90-834-59bds-t4mtq",
+            "value": "arbips-1-0-032-ci-gw-btgateway-was900-mq90-834-59bds-t4mtq"
+          },
+          {
+            "selected": false,
+            "text": "opf-15-0-fea-acc-eligibility-02-publish-62-7gmfw-0l8dh",
+            "value": "opf-15-0-fea-acc-eligibility-02-publish-62-7gmfw-0l8dh"
+          },
+          {
+            "selected": false,
+            "text": "xct-14-2-032-ci-was900-sa-jdk8-oracle19-bt-scena-96-m2ls4-289l3",
+            "value": "xct-14-2-032-ci-was900-sa-jdk8-oracle19-bt-scena-96-m2ls4-289l3"
+          },
+          {
+            "selected": false,
+            "text": "generic-large-p528j",
+            "value": "generic-large-p528j"
+          },
+          {
+            "selected": false,
+            "text": "sctinst-2-6-032-ci-dev-ooc-oracle122-163-51vc1-xx9gh",
+            "value": "sctinst-2-6-032-ci-dev-ooc-oracle122-163-51vc1-xx9gh"
+          },
+          {
+            "selected": false,
+            "text": "xct-14-2-032-ci-jboss73-oracle19-mq91-bt-service-28-v56h8-cd9kn",
+            "value": "xct-14-2-032-ci-jboss73-oracle19-mq91-bt-service-28-v56h8-cd9kn"
+          },
+          {
+            "selected": false,
+            "text": "generic-small-2vfw7",
+            "value": "generic-small-2vfw7"
+          },
+          {
+            "selected": false,
+            "text": "sctinst-2-6-032-ci-urgent-was900-cl-jdk8-oracle-163-2v80c-3pm4t",
+            "value": "sctinst-2-6-032-ci-urgent-was900-cl-jdk8-oracle-163-2v80c-3pm4t"
+          },
+          {
+            "selected": false,
+            "text": "sctinst-2-6-032-ci-urgent-wls122-cl-jdk8-oracle-164-974t1-3nbp7",
+            "value": "sctinst-2-6-032-ci-urgent-wls122-cl-jdk8-oracle-164-974t1-3nbp7"
+          },
+          {
+            "selected": false,
+            "text": "xct-14-2-032-ci-wls122-cl-jdk8-oracle19-bt-servi-28-wnt2f-pvjrd",
+            "value": "xct-14-2-032-ci-wls122-cl-jdk8-oracle19-bt-servi-28-wnt2f-pvjrd"
+          },
+          {
+            "selected": false,
+            "text": "mhbk-8-0-032-ci-xctdev-342-zcmdz-skpzv",
+            "value": "mhbk-8-0-032-ci-xctdev-342-zcmdz-skpzv"
+          },
+          {
+            "selected": false,
+            "text": "cupsxct-1-0-032-ci-businesstests-712-qmzgp-nhc9p",
+            "value": "cupsxct-1-0-032-ci-businesstests-712-qmzgp-nhc9p"
+          },
+          {
+            "selected": false,
+            "text": "amexach-1-0-032-ci-was900-jdk8-oracle121-bt-454-3h26g-w0vp9",
+            "value": "amexach-1-0-032-ci-was900-jdk8-oracle121-bt-454-3h26g-w0vp9"
+          },
+          {
+            "selected": false,
+            "text": "xct-14-2-032-ci-was900-sa-jdk8-oracle19-bt-servi-96-7b2pf-nfnqw",
+            "value": "xct-14-2-032-ci-was900-sa-jdk8-oracle19-bt-servi-96-7b2pf-nfnqw"
+          },
+          {
+            "selected": false,
+            "text": "sctinst-2-6-032-ci-urgent-jboss730-oracle122-mq9-84-xw90z-lrfww",
+            "value": "sctinst-2-6-032-ci-urgent-jboss730-oracle122-mq9-84-xw90z-lrfww"
+          },
+          {
+            "selected": false,
+            "text": "arbips-1-0-032-ci-cbis-was900-oracle19-mq90-1201-pst9h-dw2sn",
+            "value": "arbips-1-0-032-ci-cbis-was900-oracle19-mq90-1201-pst9h-dw2sn"
+          },
+          {
+            "selected": false,
+            "text": "opf-15-0-fea-postgres-032-ci-ooc-oracle19-16-rj3bq-5t1dq",
+            "value": "opf-15-0-fea-postgres-032-ci-ooc-oracle19-16-rj3bq-5t1dq"
+          },
+          {
+            "selected": false,
+            "text": "xct-14-2-01-vtk-695-8htzr-7fj74",
+            "value": "xct-14-2-01-vtk-695-8htzr-7fj74"
+          },
+          {
+            "selected": false,
+            "text": "mandiritt-1-4-032-ci-was900-jdk8-oracle19-mq90-50-3ncst-q2mgw",
+            "value": "mandiritt-1-4-032-ci-was900-jdk8-oracle19-mq90-50-3ncst-q2mgw"
+          },
+          {
+            "selected": false,
+            "text": "amexach-1-0-032-ci-was900-jdk8-oracle121-bt-qa-444-xqkp0-n79hj",
+            "value": "amexach-1-0-032-ci-was900-jdk8-oracle121-bt-qa-444-xqkp0-n79hj"
+          },
+          {
+            "selected": false,
+            "text": "sctinst-2-6-032-ci-urgent-wls122-cl-jdk8-oracle-164-974t1-33pnx",
+            "value": "sctinst-2-6-032-ci-urgent-wls122-cl-jdk8-oracle-164-974t1-33pnx"
+          },
+          {
+            "selected": false,
+            "text": "ips-1-0-02-publish-309-cd51m-qf7ns",
+            "value": "ips-1-0-02-publish-309-cd51m-qf7ns"
+          },
+          {
+            "selected": false,
+            "text": "mvvm-11-0-02-publish-14-1ggw8-3dwqq",
+            "value": "mvvm-11-0-02-publish-14-1ggw8-3dwqq"
+          },
+          {
+            "selected": false,
+            "text": "arbips-1-0-032-ci-emb-oracle19-1572-1qnkt-pszkz",
+            "value": "arbips-1-0-032-ci-emb-oracle19-1572-1qnkt-pszkz"
+          },
+          {
+            "selected": false,
+            "text": "arbips-1-0-032-ci-fastregression-was900-oracle1-572-7pzbz-5tm88",
+            "value": "arbips-1-0-032-ci-fastregression-was900-oracle1-572-7pzbz-5tm88"
+          },
+          {
+            "selected": false,
+            "text": "ips-1-0-032-ci-emb-oracle19-257-czh8j-gvdrz",
+            "value": "ips-1-0-032-ci-emb-oracle19-257-czh8j-gvdrz"
+          },
+          {
+            "selected": false,
+            "text": "xct-14-2-032-ci-wls122-cl-jdk8-oracle19-bt-ilm-n-28-7dwz7-dqzqj",
+            "value": "xct-14-2-032-ci-wls122-cl-jdk8-oracle19-bt-ilm-n-28-7dwz7-dqzqj"
+          },
+          {
+            "selected": false,
+            "text": "generic-large-md6fv",
+            "value": "generic-large-md6fv"
+          },
+          {
+            "selected": false,
+            "text": "arbips-1-0-032-ci-ooc-oracle19-1660-2h6t7-dffpc",
+            "value": "arbips-1-0-032-ci-ooc-oracle19-1660-2h6t7-dffpc"
+          },
+          {
+            "selected": false,
+            "text": "opf-15-0-032-ci-emb-oracle19-52-33pxm-5c3qp",
+            "value": "opf-15-0-032-ci-emb-oracle19-52-33pxm-5c3qp"
+          },
+          {
+            "selected": false,
+            "text": "amexach-1-0-032-ci-emb-oracle12-445-sn1pf-grrz2",
+            "value": "amexach-1-0-032-ci-emb-oracle12-445-sn1pf-grrz2"
+          },
+          {
+            "selected": false,
+            "text": "sctinst-2-6-032-ci-urgent-jboss730-oracle19-mq91-84-vzn9s-rcvz7",
+            "value": "sctinst-2-6-032-ci-urgent-jboss730-oracle19-mq91-84-vzn9s-rcvz7"
+          },
+          {
+            "selected": false,
+            "text": "san-45-0-02-publish-156-mc85t-8h063",
+            "value": "san-45-0-02-publish-156-mc85t-8h063"
+          },
+          {
+            "selected": false,
+            "text": "xct-14-2-032-ci-jboss73-oracle19-mq91-bt-mapping-28-74hq8-llzxw",
+            "value": "xct-14-2-032-ci-jboss73-oracle19-mq91-bt-mapping-28-74hq8-llzxw"
+          },
+          {
+            "selected": false,
+            "text": "xct-14-2-032-ci-was900-sa-jdk8-oracle19-bt-ilm-n-28-sm60w-s2f1z",
+            "value": "xct-14-2-032-ci-was900-sa-jdk8-oracle19-bt-ilm-n-28-sm60w-s2f1z"
+          },
+          {
+            "selected": false,
+            "text": "ips-1-0-032-ci-ooc-oracle19-251-7z7x3-3z9fp",
+            "value": "ips-1-0-032-ci-ooc-oracle19-251-7z7x3-3z9fp"
+          },
+          {
+            "selected": false,
+            "text": "na-mms-au-feature-1-0-mps-21-get-mandate-build-133-2k11j-3h6vp",
+            "value": "na-mms-au-feature-1-0-mps-21-get-mandate-build-133-2k11j-3h6vp"
+          },
+          {
+            "selected": false,
+            "text": "ecxct-1-0-032-ci-jboss73-oracle19-mq90-bt-174-nzcmd-wkqbf",
+            "value": "ecxct-1-0-032-ci-jboss73-oracle19-mq90-bt-174-nzcmd-wkqbf"
+          },
+          {
+            "selected": false,
+            "text": "opf-14-3-032-ci-ooc-oracle19-445-p270h-rk2f4",
+            "value": "opf-14-3-032-ci-ooc-oracle19-445-p270h-rk2f4"
+          },
+          {
+            "selected": false,
+            "text": "xct-14-2-032-ci-wls122-cl-jdk8-oracle19-bt-mappi-28-gvgrs-5hvj3",
+            "value": "xct-14-2-032-ci-wls122-cl-jdk8-oracle19-bt-mappi-28-gvgrs-5hvj3"
+          },
+          {
+            "selected": false,
+            "text": "opf-15-0-fea-postgres-032-ci-emb-oracle19-15-48p4c-4m6rr",
+            "value": "opf-15-0-fea-postgres-032-ci-emb-oracle19-15-48p4c-4m6rr"
+          },
+          {
+            "selected": false,
+            "text": "generic-small-ds0xw",
+            "value": "generic-small-ds0xw"
+          },
+          {
+            "selected": false,
+            "text": "xct-14-2-032-ci-was900-sa-jdk8-oracle19-bt-servi-96-7b2pf-7060s",
+            "value": "xct-14-2-032-ci-was900-sa-jdk8-oracle19-bt-servi-96-7b2pf-7060s"
+          },
+          {
+            "selected": false,
+            "text": "amexach-1-0-032-ci-ooc-oracle12-448-4k3c0-ccx6x",
+            "value": "amexach-1-0-032-ci-ooc-oracle12-448-4k3c0-ccx6x"
+          },
+          {
+            "selected": false,
+            "text": "ecxct-1-0-032-ci-was900-jdk8-oracle19-mq90-bt-509-x26fj-3c948",
+            "value": "ecxct-1-0-032-ci-was900-jdk8-oracle19-mq90-bt-509-x26fj-3c948"
+          },
+          {
+            "selected": false,
+            "text": "opf-14-3-032-ci-emb-oracle19-446-f0l1b-5pzr0",
+            "value": "opf-14-3-032-ci-emb-oracle19-446-f0l1b-5pzr0"
+          },
+          {
+            "selected": false,
+            "text": "xct-14-2-032-ci-emb-oracle19-96-d7n5p-xsfsv",
+            "value": "xct-14-2-032-ci-emb-oracle19-96-d7n5p-xsfsv"
+          },
+          {
+            "selected": false,
+            "text": "ebwires-1-0-02-publish-187-nrzcr-cj8pw",
+            "value": "ebwires-1-0-02-publish-187-nrzcr-cj8pw"
+          },
+          {
+            "selected": false,
+            "text": "fmacwires-2-0-032-ci-jboss71-mq9-oracle122-bt-n-356-0z72r-v58ft",
+            "value": "fmacwires-2-0-032-ci-jboss71-mq9-oracle122-bt-n-356-0z72r-v58ft"
+          },
+          {
+            "selected": false,
+            "text": "fmacwires-2-0-032-ci-jboss71-mq9-oracle122-bt-989-7jkgr-904dt",
+            "value": "fmacwires-2-0-032-ci-jboss71-mq9-oracle122-bt-989-7jkgr-904dt"
+          },
+          {
+            "selected": false,
+            "text": "xct-14-2-032-ci-jboss73-oracle19-mq91-bt-ilm-nig-28-cpzbx-2mmkb",
+            "value": "xct-14-2-032-ci-jboss73-oracle19-mq91-bt-ilm-nig-28-cpzbx-2mmkb"
+          },
+          {
+            "selected": false,
+            "text": "xct-14-2-032-ci-jboss73-oracle19-mq91-bt-service-28-v56h8-l22n6",
+            "value": "xct-14-2-032-ci-jboss73-oracle19-mq91-bt-service-28-v56h8-l22n6"
+          },
+          {
+            "selected": false,
+            "text": "generic-small-2h0qn",
+            "value": "generic-small-2h0qn"
+          },
+          {
+            "selected": false,
+            "text": "mhbk-8-0-032-ci-tfk-qa-bt-xct-273-m9v1j-pxpwx",
+            "value": "mhbk-8-0-032-ci-tfk-qa-bt-xct-273-m9v1j-pxpwx"
+          }
+        ],
+        "query": "query_result(sum(container_memory_working_set_bytes{namespace=\"$namespace\"}) by (pod_name))",
+        "refresh": 0,
+        "regex": "/pod_name=\\\"(.*?)(\\\")/",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "K8s-dashboard-PODS",
+  "uid": "nAiVyQLMk",
+  "version": 18
+}
